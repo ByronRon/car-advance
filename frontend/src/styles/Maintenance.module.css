@@ -1,0 +1,44 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+}
+.header {
+    font-weight: bold;
+    font-size: 16px;
+    color: teal;
+}
+
+.headerContainer {
+    font-size: 14px;
+    padding: 10px 0px;
+}
+
+.title {
+    margin-bottom: 5px;
+}
+
+.field {
+    display: flex;
+    flex-direction: row;
+}
+
+.label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.serviceTitle {
+    font-weight: 600;
+    font-size: 14px;
+    color: teal;
+}
+
+.services {
+    font-size: 14px;
+}
+
+Table {
+    font-size: 14px;
+}

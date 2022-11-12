@@ -1,0 +1,26 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    padding: 15px;
+}
+
+.button {
+    margin-top: 15px !important;
+}
+
+.title {
+    width: 100%;
+    font-size: 24px;
+    color: gray;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
