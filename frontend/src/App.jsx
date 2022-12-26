@@ -9,6 +9,7 @@ import Service from "./pages/Service";
 import Maintenance from "./pages/Maintenance";
 import Item from "./components/Item";
 import CarDetail from "./pages/CarDetail";
+import ServiceDetail from "./pages/ServiceDetail";
 
 const App = () => {
   const { currentUser } = useContext(AuthContext);
@@ -63,12 +64,32 @@ const App = () => {
                 </RequireAuth>
               }
             />
+          </Route>
+          <Route path="services">
             <Route
-              path="service"
               index
               element={
                 <RequireAuth>
                   <Service />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path=":id"
+              index
+              element={
+                <RequireAuth>
+                  <ServiceDetail />
+                </RequireAuth>
+              }
+            />
+
+            <Route
+              path="new"
+              index
+              element={
+                <RequireAuth>
+                  <ServiceDetail />
                 </RequireAuth>
               }
             />
