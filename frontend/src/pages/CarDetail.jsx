@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 import { Button, Grid, TextField } from "@mui/material";
 import styles from "../styles/CarDetail.module.css";
 import axios from "axios";
-import Notification from "../components/Notification";
+import { NotificationManager } from "react-notifications";
 
 const validationSchema = yup.object({
   brand: yup.string("Ingrese la marca").required("Campo requerido").max(45),
@@ -29,16 +29,13 @@ const CarDetail = () => {
     try {
       if (action === "NEW") {
         const res = await axios.post("cars/", values);
-
-        res && <Notification />;
-
-        navigate("/");
+        console.log("NEW", res);
       } else {
         const res = await axios.patch("cars/" + car.id, values);
         console.log(res);
-
-        res && <Notification />;
       }
+      NotificationManager.success("OK!", "", 2000);
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
@@ -53,10 +50,11 @@ const CarDetail = () => {
       cc: car.cc || 0,
       color: car.color || "",
       image: car.image || "",
-      purchase_date: car.purchase_date ? car.purchase_date.substr(0, 10) : "",
-      purchase_price: car.purchase_price || "",
-      sale_date: car.sale_date ? car.sale_date.substr(0, 10) : "",
-      sale_price: car.sale_price || "",
+      purchaseDate: car.purchaseDate ? car.purchaseDate.substr(0, 10) : "",
+      purchasePrice: car.purchasePrice || "",
+      saleDate: car.saleDate ? car.saleDate.substr(0, 10) : "",
+      salePrice: car.salePrice || "",
+      userId: "1",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -175,18 +173,18 @@ const CarDetail = () => {
             </Grid>
             <Grid item xs={2} sm={4} md={4}>
               <TextField
-                id="purchase_date"
-                name="purchase_date"
+                id="purchaseDate"
+                name="purchaseDate"
                 label="Purchase date"
                 type="date"
-                value={formik.values.purchase_date}
+                value={formik.values.purchaseDate}
                 onChange={formik.handleChange}
                 error={
-                  formik.touched.purchase_date &&
-                  Boolean(formik.errors.purchase_date)
+                  formik.touched.purchaseDate &&
+                  Boolean(formik.errors.purchaseDate)
                 }
                 helperText={
-                  formik.touched.purchase_date && formik.errors.purchase_date
+                  formik.touched.purchaseDate && formik.errors.purchaseDate
                 }
                 size="small"
                 variant="standard"
@@ -195,17 +193,17 @@ const CarDetail = () => {
             </Grid>
             <Grid item xs={2} sm={4} md={4}>
               <TextField
-                id="purchase_price"
-                name="purchase_price"
+                id="purchasePrice"
+                name="purchasePrice"
                 label="Purchase price"
-                value={formik.values.purchase_price}
+                value={formik.values.purchasePrice}
                 onChange={formik.handleChange}
                 error={
-                  formik.touched.purchase_price &&
-                  Boolean(formik.errors.purchase_price)
+                  formik.touched.purchasePrice &&
+                  Boolean(formik.errors.purchasePrice)
                 }
                 helperText={
-                  formik.touched.purchase_price && formik.errors.purchase_price
+                  formik.touched.purchasePrice && formik.errors.purchasePrice
                 }
                 size="small"
                 variant="standard"
@@ -213,17 +211,17 @@ const CarDetail = () => {
             </Grid>
             <Grid item xs={2} sm={4} md={4}>
               <TextField
-                id="sale_date"
-                name="sale_date"
+                id="saleDate"
+                name="saleDate"
                 label="Sale date"
                 type="date"
-                value={formik.values.sale_date}
+                value={formik.values.saleDate}
                 onChange={formik.handleChange}
                 error={
-                  formik.touched.sale_date && Boolean(formik.errors.sale_date)
+                  formik.touched.saleDate && Boolean(formik.errors.saleDate)
                 }
                 helperText={
-                  formik.touched.sale_date && formik.errors.purchase_date
+                  formik.touched.saleDate && formik.errors.purchaseDate
                 }
                 size="small"
                 variant="standard"
@@ -232,17 +230,15 @@ const CarDetail = () => {
             </Grid>
             <Grid item xs={2} sm={4} md={4}>
               <TextField
-                id="sale_price"
-                name="sale_price"
+                id="salePrice"
+                name="salePrice"
                 label="Sale price"
-                value={formik.values.sale_price}
+                value={formik.values.salePrice}
                 onChange={formik.handleChange}
                 error={
-                  formik.touched.sale_price && Boolean(formik.errors.sale_price)
+                  formik.touched.salePrice && Boolean(formik.errors.salePrice)
                 }
-                helperText={
-                  formik.touched.sale_price && formik.errors.sale_price
-                }
+                helperText={formik.touched.salePrice && formik.errors.salePrice}
                 size="small"
                 variant="standard"
               />

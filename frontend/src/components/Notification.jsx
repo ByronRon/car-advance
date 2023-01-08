@@ -1,7 +1,7 @@
 import { Alert } from "@mui/material";
 import React from "react";
 
-const error = (msg) => {
+const danger = (msg) => {
   return <Alert severity="error">{msg}</Alert>;
 };
 

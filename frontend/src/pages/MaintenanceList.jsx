@@ -11,7 +11,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { maintenancesColumns } from "../datatables/maintenances.datatables";
 
-const Maintenance = () => {
+const MaintenanceList = () => {
   const item = useLocation();
   console.log(item);
   const {
@@ -93,4 +93,4 @@ const Maintenance = () => {
   );
 };
 
-export default Maintenance;
+export default MaintenanceList;

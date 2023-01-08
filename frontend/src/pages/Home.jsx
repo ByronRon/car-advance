@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import { carColumns } from "../datatables/cars.datatables";
 import styles from "../styles/Datatable.module.css";
@@ -9,11 +9,14 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import axios from "axios";
 
 const Home = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const handleDelete = async (e, id) => {
     e.preventDefault();
     try {
       const res = await axios.delete("cars/" + id);
       console.log(res);
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
@@ -26,12 +29,13 @@ const Home = () => {
       try {
         const res = await axios.get("cars");
         setCars(res.data.data);
+        console.log("carga data");
       } catch (err) {
         console.log(err);
       }
     };
     fetchData();
-  }, []);
+  }, [location.key]);
 
   const actionColumn = [
     {

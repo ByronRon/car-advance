@@ -5,8 +5,7 @@ import { useFormik } from "formik";
 import { Button, Grid, TextField } from "@mui/material";
 import styles from "../styles/CarDetail.module.css";
 import axios from "axios";
-import Notification from "../components/Notification";
-import CarDetail from "./CarDetail";
+import { NotificationManager } from "react-notifications";
 
 const validationSchema = yup.object({
   title: yup
@@ -26,18 +25,12 @@ const ServiceDetail = () => {
   const handleSubmit = async (values) => {
     try {
       if (action === "NEW") {
-        const res = await axios.post("services/", values);
-
-        res && <Notification />;
-
-        navigate("/services");
+        await axios.post("services/", values);
       } else {
-        const res = await axios.patch("services/" + service.id, values);
-        console.log(res);
-
-        res && <Notification />;
-        navigate("/services");
+        await axios.patch("services/" + service.id, values);
       }
+      NotificationManager.success("OK!", "", 2000);
+      navigate("/services");
     } catch (err) {
       console.log(err);
     }
@@ -50,7 +43,6 @@ const ServiceDetail = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
       handleSubmit(values);
     },
   });

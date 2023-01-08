@@ -7,8 +7,13 @@ import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutline
 import ListOutlinedIcon from "@mui/icons-material/ListOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import styles from "../styles/Navbar.module.css";
+import { useAuth0 } from "@auth0/auth0-react";
+import SignUpButton from "./buttons/SignUpButton";
+import LoginButton from "./buttons/LoginButton";
+import LogoutButton from "./buttons/LogoutButton";
 
 const Navbar = () => {
+  const { isAuthenticated } = useAuth0();
   return (
     <div className={styles.navbar}>
       <div className={styles.wrapper}>
@@ -17,6 +22,27 @@ const Navbar = () => {
           <SearchOutlinedIcon />
         </div> */}
         <div className={styles.items}>
+          {!isAuthenticated && (
+            <>
+              <div className={styles.item}>
+                <SignUpButton />
+              </div>
+              <div className={styles.item}>
+                <LoginButton />
+              </div>
+            </>
+          )}
+          {isAuthenticated && (
+            <>
+              <div className={styles.item}>
+                <LogoutButton />
+              </div>
+            </>
+          )}
+          <div className={styles.item}>
+            <LanguageOutlinedIcon className={styles.icon} />
+            English
+          </div>
           <div className={styles.item}>
             <LanguageOutlinedIcon className={styles.icon} />
             English

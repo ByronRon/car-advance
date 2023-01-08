@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
-// import { services } from "../data";
 import styles from "../styles/Datatable.module.css";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -9,18 +8,32 @@ import { servicesColumns } from "../datatables/services.datatables";
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
+import { NotificationManager } from "react-notifications";
+import { useConfirm } from "material-ui-confirm";
 
 const Service = () => {
+  const confirm = useConfirm();
+  const [services, setServices] = useState([]);
+
   const handleDelete = async (e, id) => {
     e.preventDefault();
     try {
-      const res = await axios.delete("services/" + id);
+      confirm({
+        title: "",
+        description: "Esta seguro que desea eliminar el registro seleccionado?",
+      })
+        .then(async () => {
+          await axios.delete("services/" + id);
+          NotificationManager.success("OK!", "", 2000);
+          setServices((services) =>
+            services.filter((service) => service.id !== id)
+          );
+        })
+        .catch(() => {});
     } catch (err) {
       console.log(err);
     }
   };
-
-  const [services, setServices] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {

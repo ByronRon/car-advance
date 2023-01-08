@@ -1,5 +1,5 @@
 export const carColumns = [
-  { field: "id", headerName: "ID", width: 70 },
+  //{ field: "id", headerName: "ID", width: 200,  },
   {
     field: "brand",
     headerName: "Brand",

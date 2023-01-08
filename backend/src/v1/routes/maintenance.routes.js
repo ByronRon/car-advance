@@ -17,7 +17,7 @@ import {
 
 const router = Router();
 
-router.get("/cars/:car_id/maintenances", getMaintenances);
+router.get("/cars/:carId/maintenances", getMaintenances);
 
 router.get("/maintenances/:id", getMaintenance);
 

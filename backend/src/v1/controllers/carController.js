@@ -1,16 +1,26 @@
-import carDatabase from "../../database/car.js";
 import AppError from "../../utils/appError.js";
+import { PrismaClient } from "@prisma/client";
 
-export const getCars = (req, res, next) => {
-  carDatabase.getCars((err, data) => {
-    if (err) {
-      return next(new AppError("ERROR"));
-    }
-    res.status(200).send({ status: "OK", data: data });
-  });
+const prisma = new PrismaClient();
+
+export const getCars = async (req, res, next) => {
+  try {
+    const cars = await prisma.car
+      .findMany
+      //   {
+      //   include: {
+      //     maintenances: true,
+      //   },
+      // }
+      ();
+    res.status(200).send({ status: "OK", data: cars });
+  } catch (err) {
+    console.log(err);
+    return next(new AppError("Error al obtener los registros"));
+  }
 };
 
-export const getCar = (req, res, next) => {
+export const getCar = async (req, res, next) => {
   const {
     params: { id },
   } = req;
@@ -18,29 +28,50 @@ export const getCar = (req, res, next) => {
   if (!id) {
     return next(new AppError("The required field id is missing"));
   }
-
-  carDatabase.getCar(id, (err, data) => {
-    if (err) {
-      return next(new AppError("ERROR"));
-    }
-    res.status(200).send({ status: "OK", data: data });
-  });
+  try {
+    const car = await prisma.car.findUniqueOrThrow({
+      where: {
+        id: id,
+      },
+    });
+    res.status(200).send({ status: "OK", data: car });
+  } catch (err) {
+    console.log(err);
+    return next(new AppError("Error al obtener el registro"));
+  }
 };
 
-export const createCar = (req, res, next) => {
+export const createCar = async (req, res, next) => {
   const { body } = req;
-  if (!body.brand || !body.model || !body.plate || !body.cc) {
+  if (!body.brand || !body.model || !body.year || !body.plate) {
     return next(new AppError("Fields required"));
   }
-  carDatabase.createCar(body, (err, data) => {
-    if (err) {
-      return next(new AppError("ERROR"));
-    }
-    res.status(200).send({ status: "OK", data: data });
-  });
+
+  try {
+    const car = await prisma.car.create({
+      data: {
+        brand: body.brand,
+        model: body.model,
+        year: body.year,
+        plate: body.plate,
+        cc: body.cc,
+        color: body.color,
+        image: body.image,
+        purchaseDate: body.purchaseDate ? new Date(body.purchaseDate) : null,
+        purchasePrice: body.purchasePrice || null,
+        saleDate: body.saleDate ? new Date(body.saleDate) : null,
+        salePrice: body.salePrice || null,
+        userId: body.userId,
+      },
+    });
+    res.status(200).send({ status: "OK", data: car });
+  } catch (err) {
+    console.log(err);
+    return next(new AppError("Error al crear el registro"));
+  }
 };
 
-export const updateCar = (req, res, next) => {
+export const updateCar = async (req, res, next) => {
   const {
     body,
     params: { id },
@@ -48,15 +79,33 @@ export const updateCar = (req, res, next) => {
   if (!id) {
     return next(new AppError("The required field id is missing"));
   }
-  carDatabase.updateCar(id, body, (err, data) => {
-    if (err) {
-      return next(new AppError("ERROR"));
-    }
-    res.status(200).send({ status: "OK", data: data });
-  });
+  try {
+    const carUpdated = await prisma.car.update({
+      where: {
+        id: id,
+      },
+      data: {
+        brand: body.brand,
+        model: body.model,
+        year: body.year,
+        plate: body.plate,
+        cc: body.cc,
+        color: body.color,
+        image: body.image,
+        purchaseDate: body.purchaseDate ? new Date(body.purchaseDate) : null,
+        purchasePrice: body.purchasePrice || null,
+        saleDate: body.saleDate ? new Date(body.saleDate) : null,
+        salePrice: body.salePrice || null,
+      },
+    });
+    res.status(200).send({ status: "OK", data: carUpdated });
+  } catch (err) {
+    console.log(err);
+    return next(new AppError("Error al actualizar el registro"));
+  }
 };
 
-export const deleteCar = (req, res, next) => {
+export const deleteCar = async (req, res, next) => {
   const {
     params: { id },
   } = req;
@@ -65,10 +114,15 @@ export const deleteCar = (req, res, next) => {
     return next(new AppError("The required field id is missing"));
   }
 
-  carDatabase.deleteCar(id, (err, data) => {
-    if (err) {
-      return next(new AppError("ERROR"));
-    }
-    res.status(200).send({ status: "OK", data: data });
-  });
+  try {
+    const carDeleted = await prisma.car.delete({
+      where: {
+        id: id,
+      },
+    });
+    res.status(200).send({ status: "OK", data: carDeleted });
+  } catch (err) {
+    console.log(err);
+    return next(new AppError("Error al eliminar el registro"));
+  }
 };
