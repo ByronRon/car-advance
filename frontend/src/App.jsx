@@ -21,12 +21,6 @@ import AuthenticationGuard from "./components/guards/AuthenticationGuard";
 import { PageLoader } from "./components/PageLoader";
 
 const App = () => {
-  // const { currentUser } = useContext(AuthContext);
-
-  // const RequireAuth = ({ children }) => {
-  //   return currentUser ? children : <Navigate to="/login" />;
-  // };
-
   const { isLoading } = useAuth0();
 
   if (isLoading) {
@@ -37,15 +31,12 @@ const App = () => {
     );
   }
 
-  //console.log(currentUser);
   return (
     <div>
       <ConfirmProvider>
         <NotificationContainer />
-        {/* <BrowserRouter> */}
         <Routes>
           <Route element={<LayoutNoHeader />}>
-            {/* <Route path="/"> */}
             <Route path="login" element={<Login />} />
           </Route>
           <Route element={<Layout />}>
@@ -150,7 +141,6 @@ const App = () => {
           </Route> */}
           </Route>
         </Routes>
-        {/* </BrowserRouter> */}
       </ConfirmProvider>
     </div>
   );

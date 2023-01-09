@@ -1,40 +1,52 @@
 import { Router } from "express";
 import {
+  checkRequiredPermissions,
+  validateAccessToken,
+} from "../../utils/auth0.middleware.js";
+import {
   getMaintenances,
   getMaintenance,
   createMaintenance,
   updateMaintenance,
   deleteMaintenance,
 } from "../controllers/maintenanceController.js";
-
-import {
-  getMaintenanceServices,
-  getMaintenanceService,
-  createMaintenanceService,
-  updateMaintenanceService,
-  deleteMaintenanceService,
-} from "../controllers/maintenanceServiceController.js";
+import { UserMaintenancePermissions } from "../permissions/maintenance.permissions .js";
 
 const router = Router();
 
-router.get("/cars/:carId/maintenances", getMaintenances);
+router.get(
+  "/cars/:carId/maintenances",
+  validateAccessToken,
+  checkRequiredPermissions([UserMaintenancePermissions.ReadList]),
+  getMaintenances
+);
 
-router.get("/maintenances/:id", getMaintenance);
+router.get(
+  "/maintenances/:id",
+  validateAccessToken,
+  checkRequiredPermissions([UserMaintenancePermissions.Read]),
+  getMaintenance
+);
 
-router.post("/maintenances", createMaintenance);
+router.post(
+  "/maintenances",
+  validateAccessToken,
+  checkRequiredPermissions([UserMaintenancePermissions.Create]),
+  createMaintenance
+);
 
-router.patch("/maintenances/:id", updateMaintenance);
+router.patch(
+  "/maintenances/:id",
+  validateAccessToken,
+  checkRequiredPermissions([UserMaintenancePermissions.Update]),
+  updateMaintenance
+);
 
-router.delete("/maintenances/:id", deleteMaintenance);
-
-router.get("/maintenances/:id/services", getMaintenanceServices);
-
-router.get("/maintenances/:id/services/:msid", getMaintenanceService);
-
-router.post("/maintenances/:id/services", createMaintenanceService);
-
-router.patch("/maintenances/:id/services/:msid", updateMaintenanceService);
-
-router.delete("/maintenances/:id/services/:msid", deleteMaintenanceService);
+router.delete(
+  "/maintenances/:id",
+  validateAccessToken,
+  checkRequiredPermissions([UserMaintenancePermissions.Delete]),
+  deleteMaintenance
+);
 
 export default router;

@@ -5,14 +5,7 @@ const prisma = new PrismaClient();
 
 export const getCars = async (req, res, next) => {
   try {
-    const cars = await prisma.car
-      .findMany
-      //   {
-      //   include: {
-      //     maintenances: true,
-      //   },
-      // }
-      ();
+    const cars = await prisma.car.findMany();
     res.status(200).send({ status: "OK", data: cars });
   } catch (err) {
     console.log(err);

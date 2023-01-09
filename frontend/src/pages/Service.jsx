@@ -10,10 +10,13 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { NotificationManager } from "react-notifications";
 import { useConfirm } from "material-ui-confirm";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getServices } from "../services/service.service";
 
 const Service = () => {
   const confirm = useConfirm();
   const [services, setServices] = useState([]);
+  const { getAccessTokenSilently } = useAuth0();
 
   const handleDelete = async (e, id) => {
     e.preventDefault();
@@ -37,15 +40,18 @@ const Service = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const res = await axios.get("services");
-        setServices(res.data.data);
-      } catch (err) {
-        console.log(err);
-      }
+      const accessToken = await getAccessTokenSilently();
+      const { data, error } = await getServices(accessToken);
+      if (data) setServices(data.data);
+      else if (error)
+        NotificationManager.error(
+          "Existio un error al obtener la informacion",
+          "",
+          2000
+        );
     };
     fetchData();
-  }, []);
+  }, [getAccessTokenSilently]);
 
   const actionColumn = [
     {

@@ -7,10 +7,13 @@ import CarRepairIcon from "@mui/icons-material/CarRepair";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Home = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const { getAccessTokenSilently } = useAuth0();
   const handleDelete = async (e, id) => {
     e.preventDefault();
     try {
@@ -27,7 +30,13 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("cars");
+        const accessToken = await getAccessTokenSilently();
+        const res = await axios.get("cars", {
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
         setCars(res.data.data);
         console.log("carga data");
       } catch (err) {
@@ -35,7 +44,7 @@ const Home = () => {
       }
     };
     fetchData();
-  }, [location.key]);
+  }, [location.key, getAccessTokenSilently]);
 
   const actionColumn = [
     {

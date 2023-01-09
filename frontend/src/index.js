@@ -4,7 +4,7 @@ import App from "./App";
 import axios from "axios";
 import { NotificationManager } from "react-notifications";
 import { BrowserRouter } from "react-router-dom";
-import Auth0ProviderWithNavigate from "./auth0-provider-with-navigate";
+import Auth0ProviderWithNavigate from "./Auth0ProviderWithNavigate";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 

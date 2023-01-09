@@ -7,16 +7,47 @@ import {
   deleteService,
 } from "../controllers/serviceController.js";
 
+import {
+  checkRequiredPermissions,
+  validateAccessToken,
+} from "../../utils/auth0.middleware.js";
+import { UserServicePermissions } from "../permissions/service.permissions.js";
+
 const router = Router();
 
-router.get("/services", getServices);
+router.get(
+  "/services",
+  validateAccessToken,
+  checkRequiredPermissions([UserServicePermissions.ReadList]),
+  getServices
+);
 
-router.get("/services/:id", getService);
+router.get(
+  "/services/:id",
+  validateAccessToken,
+  checkRequiredPermissions([UserServicePermissions.Read]),
+  getService
+);
 
-router.post("/services", createService);
+router.post(
+  "/services",
+  validateAccessToken,
+  checkRequiredPermissions([UserServicePermissions.Create]),
+  createService
+);
 
-router.patch("/services/:id", updateService);
+router.patch(
+  "/services/:id",
+  validateAccessToken,
+  checkRequiredPermissions([UserServicePermissions.Update]),
+  updateService
+);
 
-router.delete("/services/:id", deleteService);
+router.delete(
+  "/services/:id",
+  validateAccessToken,
+  checkRequiredPermissions([UserServicePermissions.Delete]),
+  deleteService
+);
 
 export default router;
