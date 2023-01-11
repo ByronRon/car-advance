@@ -13,7 +13,6 @@ import { maintenancesColumns } from "../datatables/maintenances.datatables";
 
 const MaintenanceList = () => {
   const item = useLocation();
-  console.log(item);
   const {
     state: { car },
   } = item;
@@ -22,7 +21,7 @@ const MaintenanceList = () => {
   const handleDelete = async (e, id) => {
     e.preventDefault();
     try {
-      const res = await axios.delete("maintenances/" + id);
+      await axios.delete("maintenances/" + id);
     } catch (err) {
       console.log(err);
     }

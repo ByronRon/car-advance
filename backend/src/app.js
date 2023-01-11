@@ -9,6 +9,7 @@ import v1CarRouter from "./v1/routes/car.routes.js";
 import v1ServiceRouter from "./v1/routes/service.routes.js";
 import v1MaintenanceRouter from "./v1/routes/maintenance.routes.js";
 import notFoundHandler from "./utils/notFound.middleware.js";
+import bodyParser from "body-parser";
 
 dotenv.config();
 

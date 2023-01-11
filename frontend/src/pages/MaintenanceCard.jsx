@@ -8,7 +8,6 @@ import axios from "axios";
 
 const MaintenanceCard = () => {
   const location = useLocation();
-  console.log(location.state);
   const { car } = location.state;
 
   const [maintenances, setMaintenances] = useState([]);
@@ -17,7 +16,6 @@ const MaintenanceCard = () => {
     const fetchData = async () => {
       try {
         const res = await axios.get("/cars/" + car.id + "/maintenances");
-        console.log(res.data);
         setMaintenances(res.data.data);
       } catch (err) {
         console.log(err);

@@ -13,9 +13,11 @@ import ServiceDetail from "./pages/ServiceDetail";
 import MaintenanceCard from "./pages/MaintenanceCard";
 import MaintenanceDetail from "./pages/MaintenanceDetail";
 import "react-notifications/lib/notifications.css";
-import NotificationContainer from "react-notifications";
-import { ConfirmProvider } from "material-ui-confirm";
+// import NotificationContainer from "react-notifications";
+// import { ConfirmProvider } from "material-ui-confirm";
 import CallbackPage from "./pages/CallbackPage";
+//import "react-notifications/lib/notifications.css";
+// import NotificationContainer from "react-notifications";
 
 import AuthenticationGuard from "./components/guards/AuthenticationGuard";
 import { PageLoader } from "./components/PageLoader";
@@ -33,61 +35,61 @@ const App = () => {
 
   return (
     <div>
-      <ConfirmProvider>
-        <NotificationContainer />
-        <Routes>
-          <Route element={<LayoutNoHeader />}>
-            <Route path="login" element={<Login />} />
+      {/* <ConfirmProvider>
+        <NotificationContainer /> */}
+      <Routes>
+        <Route element={<LayoutNoHeader />}>
+          <Route path="login" element={<Login />} />
+        </Route>
+        <Route element={<Layout />}>
+          <Route path="/">
+            <Route index element={<AuthenticationGuard component={Home} />} />
+
+            <Route
+              path="cars/:id"
+              index
+              element={<AuthenticationGuard component={CarDetail} />}
+            />
+            <Route
+              path="cars/new"
+              index
+              element={<AuthenticationGuard component={CarDetail} />}
+            />
+            <Route
+              path="cars/:id/maintenances"
+              index
+              element={<AuthenticationGuard component={MaintenanceCard} />}
+            />
+            <Route
+              path="cars/:id/maintenances/new"
+              index
+              element={<AuthenticationGuard component={MaintenanceDetail} />}
+            />
+            <Route
+              path="cars/:id/maintenances/:idm"
+              index
+              element={<AuthenticationGuard component={MaintenanceDetail} />}
+            />
           </Route>
-          <Route element={<Layout />}>
-            <Route path="/">
-              <Route index element={<AuthenticationGuard component={Home} />} />
+          <Route path="services">
+            <Route
+              index
+              element={<AuthenticationGuard component={Service} />}
+            />
+            <Route
+              path=":id"
+              index
+              element={<AuthenticationGuard component={ServiceDetail} />}
+            />
 
-              <Route
-                path="cars/:id"
-                index
-                element={<AuthenticationGuard component={CarDetail} />}
-              />
-              <Route
-                path="cars/new"
-                index
-                element={<AuthenticationGuard component={CarDetail} />}
-              />
-              <Route
-                path="cars/:id/maintenances"
-                index
-                element={<AuthenticationGuard component={MaintenanceCard} />}
-              />
-              <Route
-                path="cars/:id/maintenances/new"
-                index
-                element={<AuthenticationGuard component={MaintenanceDetail} />}
-              />
-              <Route
-                path="cars/:id/maintenances/:idm"
-                index
-                element={<AuthenticationGuard component={MaintenanceDetail} />}
-              />
-            </Route>
-            <Route path="services">
-              <Route
-                index
-                element={<AuthenticationGuard component={Service} />}
-              />
-              <Route
-                path=":id"
-                index
-                element={<AuthenticationGuard component={ServiceDetail} />}
-              />
-
-              <Route
-                path="new"
-                index
-                element={<AuthenticationGuard component={ServiceDetail} />}
-              />
-            </Route>
-            <Route path="/callback" element={CallbackPage} />
-            {/* <Route path="users">
+            <Route
+              path="new"
+              index
+              element={<AuthenticationGuard component={ServiceDetail} />}
+            />
+          </Route>
+          <Route path="/callback" element={CallbackPage} />
+          {/* <Route path="users">
             <Route
               index
               element={
@@ -139,9 +141,9 @@ const App = () => {
               }
             />
           </Route> */}
-          </Route>
-        </Routes>
-      </ConfirmProvider>
+        </Route>
+      </Routes>
+      {/* </ConfirmProvider> */}
     </div>
   );
 };

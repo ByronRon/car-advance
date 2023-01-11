@@ -4,8 +4,9 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { Button, Grid, TextField } from "@mui/material";
 import styles from "../styles/CarDetail.module.css";
-import axios from "axios";
 import { NotificationManager } from "react-notifications";
+import { useAuth0 } from "@auth0/auth0-react";
+import { postServices, updateServices } from "../services/service.service";
 
 const validationSchema = yup.object({
   title: yup
@@ -16,6 +17,7 @@ const validationSchema = yup.object({
 });
 
 const ServiceDetail = () => {
+  const { getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
   const item = useLocation();
   const {
@@ -24,12 +26,30 @@ const ServiceDetail = () => {
 
   const handleSubmit = async (values) => {
     try {
+      const accessToken = await getAccessTokenSilently();
+
       if (action === "NEW") {
-        await axios.post("services/", values);
+        const { error } = await postServices(values, accessToken);
+        if (error) {
+          NotificationManager.error(
+            "Existio un error al crear el registro",
+            "",
+            2000
+          );
+          return;
+        }
       } else {
-        await axios.patch("services/" + service.id, values);
+        const { error } = await updateServices(service.id, values, accessToken);
+        if (error) {
+          NotificationManager.error(
+            "Existio un error al actualizar el registro",
+            "",
+            2000
+          );
+          return;
+        }
       }
-      NotificationManager.success("OK!", "", 2000);
+      NotificationManager.success("Transaccion existosa", "", 2000);
       navigate("/services");
     } catch (err) {
       console.log(err);

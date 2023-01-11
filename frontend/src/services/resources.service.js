@@ -1,4 +1,3 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { callApi } from "./api.service";
 
 const apiServerUrl = process.env.REACT_APP_API_URL;
@@ -13,12 +12,13 @@ const getPublicConfig = (url, method) => {
   };
 };
 
-const getProtectedConfig = (url, method, accessToken) => {
+const getProtectedConfig = (url, method, accessToken, values) => {
   return {
     url: apiServerUrl + url,
     method: method,
+    data: JSON.stringify(values) || {},
     headers: {
-      "content-type": "application/json",
+      "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
   };
@@ -44,22 +44,18 @@ export const GetProtectedResource = async (url, accessToken) => {
   };
 };
 
-export const PostProtectedResource = async (url) => {
-  const { getAccessTokenSilently } = useAuth0();
-  const accessToken = await getAccessTokenSilently();
+export const PostProtectedResource = async (url, accessToken, values) => {
   const { data, error } = await callApi(
-    getProtectedConfig(url, "POST", accessToken)
+    getProtectedConfig(url, "POST", accessToken, values)
   );
-
+  console.log("ERROR::", error);
   return {
     data: data || null,
     error,
   };
 };
 
-export const DeleteProtectedResource = async (url) => {
-  const { getAccessTokenSilently } = useAuth0();
-  const accessToken = await getAccessTokenSilently();
+export const DeleteProtectedResource = async (url, accessToken) => {
   const { data, error } = await callApi(
     getProtectedConfig(url, "DELETE", accessToken)
   );
@@ -70,11 +66,9 @@ export const DeleteProtectedResource = async (url) => {
   };
 };
 
-export const UpdateProtectedResource = async (url) => {
-  const { getAccessTokenSilently } = useAuth0();
-  const accessToken = await getAccessTokenSilently();
+export const UpdateProtectedResource = async (url, accessToken, values) => {
   const { data, error } = await callApi(
-    getProtectedConfig(url, "PATCH", accessToken)
+    getProtectedConfig(url, "PATCH", accessToken, values)
   );
 
   return {

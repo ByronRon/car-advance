@@ -67,12 +67,10 @@ const MaintenanceDetail = () => {
     try {
       if (action === "NEW") {
         values.services = selectedServices;
-        const res = await axios.post("maintenances/", values);
-        console.log("NEW", res);
+        await axios.post("maintenances/", values);
       } else {
         values.services = selectedServices;
-        const res = await axios.patch("maintenances/" + maintenance.id, values);
-        console.log(res);
+        await axios.patch("maintenances/" + maintenance.id, values);
       }
       NotificationManager.success("OK!", "", 2000);
       navigate("/cars/" + maintenance.carId + "/maintenances", {
@@ -119,12 +117,9 @@ const MaintenanceDetail = () => {
     validationSchema: serviceValidationSchema,
     onSubmit: (values) => {
       if (selectedService && selectedService.id) {
-        console.log("SELECTED::", selectedService);
-        console.log("SELECTED SERVICES::", selectedServices);
         const item = selectedServices.find(
           (service) => service.service.id === selectedService.id
         );
-        console.log("ITEM::", item);
         if (!item) {
           setSelectedServices((prevArray) => [
             ...prevArray,

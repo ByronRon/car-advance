@@ -14,11 +14,11 @@ export const getService = async (id, accessToken) => {
 };
 
 export const postServices = async (values, accessToken) => {
-  return await PostProtectedResource("services", values, accessToken);
+  return await PostProtectedResource("services", accessToken, values);
 };
 
 export const updateServices = async (id, values, accessToken) => {
-  return await UpdateProtectedResource("services/" + id, values, accessToken);
+  return await UpdateProtectedResource("services/" + id, accessToken, values);
 };
 
 export const deleteServices = async (id, accessToken) => {

@@ -17,8 +17,7 @@ const Home = () => {
   const handleDelete = async (e, id) => {
     e.preventDefault();
     try {
-      const res = await axios.delete("cars/" + id);
-      console.log(res);
+      await axios.delete("cars/" + id);
       navigate("/");
     } catch (err) {
       console.log(err);
@@ -38,7 +37,6 @@ const Home = () => {
           },
         });
         setCars(res.data.data);
-        console.log("carga data");
       } catch (err) {
         console.log(err);
       }

@@ -28,11 +28,9 @@ const CarDetail = () => {
   const handleSubmit = async (values) => {
     try {
       if (action === "NEW") {
-        const res = await axios.post("cars/", values);
-        console.log("NEW", res);
+        await axios.post("cars/", values);
       } else {
-        const res = await axios.patch("cars/" + car.id, values);
-        console.log(res);
+        await axios.patch("cars/" + car.id, values);
       }
       NotificationManager.success("OK!", "", 2000);
       navigate("/");

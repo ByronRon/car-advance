@@ -5,13 +5,12 @@ import styles from "../styles/Datatable.module.css";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { servicesColumns } from "../datatables/services.datatables";
-import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import { NotificationManager } from "react-notifications";
 import { useConfirm } from "material-ui-confirm";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getServices } from "../services/service.service";
+import { deleteServices, getServices } from "../services/service.service";
 
 const Service = () => {
   const confirm = useConfirm();
@@ -26,13 +25,24 @@ const Service = () => {
         description: "Esta seguro que desea eliminar el registro seleccionado?",
       })
         .then(async () => {
-          await axios.delete("services/" + id);
-          NotificationManager.success("OK!", "", 2000);
-          setServices((services) =>
-            services.filter((service) => service.id !== id)
-          );
+          const accessToken = await getAccessTokenSilently();
+          const { error } = await deleteServices(id, accessToken);
+          if (error)
+            NotificationManager.error(
+              "Existio un error al eliminar la informacion",
+              "",
+              2000
+            );
+          else {
+            NotificationManager.success("OK!", "", 2000);
+            setServices((services) =>
+              services.filter((service) => service.id !== id)
+            );
+          }
         })
-        .catch(() => {});
+        .catch((error) => {
+          console.log(error);
+        });
     } catch (err) {
       console.log(err);
     }

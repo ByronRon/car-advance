@@ -2,9 +2,7 @@ import axios from "axios";
 
 export const callApi = async (options) => {
   try {
-    console.log("API::", options);
     const response = await axios(options);
-    console.log(response);
     const { data } = response;
 
     return {
