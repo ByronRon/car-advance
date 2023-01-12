@@ -37,7 +37,7 @@ const CarDetail = () => {
         await updateCar(car.id, values, accessToken);
       }
       NotificationManager.success("Transaccion existosa", "", 2000);
-      navigate("/");
+      navigate("/cars");
     } catch (err) {
       console.log(err);
       NotificationManager.error(

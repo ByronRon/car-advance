@@ -5,22 +5,29 @@ import {
   UpdateProtectedResource,
 } from "./resources.service";
 
-export const getCars = async (accessToken) => {
-  return await GetProtectedResource("cars", accessToken);
+export const getMaintenances = async (carId, accessToken) => {
+  return await GetProtectedResource(
+    "/cars/" + carId + "/maintenances",
+    accessToken
+  );
 };
 
-export const getCar = async (id, accessToken) => {
-  return await GetProtectedResource("cars/" + id, accessToken);
+export const getMaintenance = async (id, accessToken) => {
+  return await GetProtectedResource("/maintenances/" + id, accessToken);
 };
 
-export const postCar = async (values, accessToken) => {
-  return await PostProtectedResource("cars", accessToken, values);
+export const postMaintenance = async (values, accessToken) => {
+  return await PostProtectedResource("maintenances", accessToken, values);
 };
 
-export const updateCar = async (id, values, accessToken) => {
-  return await UpdateProtectedResource("cars/" + id, accessToken, values);
+export const updateMaintenance = async (id, values, accessToken) => {
+  return await UpdateProtectedResource(
+    "maintenances/" + id,
+    accessToken,
+    values
+  );
 };
 
-export const deleteCar = async (id, accessToken) => {
-  return await DeleteProtectedResource("cars/" + id, accessToken);
+export const deleteMaintenance = async (id, accessToken) => {
+  return await DeleteProtectedResource("maintenances/" + id, accessToken);
 };

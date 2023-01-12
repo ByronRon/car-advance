@@ -44,7 +44,7 @@ const Car = () => {
         setCars((cars) => cars.filter((car) => car.id !== id));
 
         NotificationManager.success("OK!", "", 2000);
-        navigate("/");
+        navigate("/cars");
       });
     } catch (err) {
       console.log(err);

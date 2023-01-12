@@ -15,6 +15,7 @@ import CallbackPage from "./pages/CallbackPage";
 import AuthenticationGuard from "./components/guards/AuthenticationGuard";
 import { PageLoader } from "./components/PageLoader";
 import Car from "./pages/Car";
+import Home from "./pages/Home";
 
 const App = () => {
   const { isLoading } = useAuth0();
@@ -37,8 +38,13 @@ const App = () => {
         </Route>
         <Route element={<Layout />}>
           <Route path="/">
-            <Route index element={<AuthenticationGuard component={Car} />} />
+            <Route index element={Home} />
 
+            <Route
+              path="cars"
+              index
+              element={<AuthenticationGuard component={Car} />}
+            />
             <Route
               path="cars/:id"
               index

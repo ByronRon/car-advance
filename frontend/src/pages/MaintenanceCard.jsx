@@ -4,25 +4,30 @@ import { Link, useLocation } from "react-router-dom";
 import styles from "../styles/Datatable.module.css";
 import stylesM from "../styles/Maintenance.module.css";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getMaintenances } from "../services/maintenance.service";
 
 const MaintenanceCard = () => {
   const location = useLocation();
   const { car } = location.state;
+  const { getAccessTokenSilently } = useAuth0();
 
   const [maintenances, setMaintenances] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("/cars/" + car.id + "/maintenances");
-        setMaintenances(res.data.data);
+        const accessToken = await getAccessTokenSilently();
+        const resp = await getMaintenances(car.id, accessToken);
+        if (resp) {
+          setMaintenances(resp.data.data);
+        }
       } catch (err) {
         console.log(err);
       }
     };
     fetchData();
-  }, [location.key, car.id]);
+  }, [car.id, getAccessTokenSilently]);
 
   const handleSelect = (event) => {
     console.log(event);

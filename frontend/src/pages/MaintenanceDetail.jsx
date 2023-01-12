@@ -18,6 +18,12 @@ import axios from "axios";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { NotificationManager } from "react-notifications";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getServices } from "../services/service.service";
+import {
+  postMaintenance,
+  updateMaintenance,
+} from "../services/maintenance.service";
 
 const maintenanceValidationSchema = yup.object({
   title: yup
@@ -40,6 +46,7 @@ const serviceValidationSchema = yup.object({
 
 const MaintenanceDetail = () => {
   const navigate = useNavigate();
+  const { getAccessTokenSilently } = useAuth0();
   const location = useLocation();
   const {
     state: { maintenance, action },
@@ -52,27 +59,35 @@ const MaintenanceDetail = () => {
   );
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get("/services");
-        setServices(res.data.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
-  }, []);
+    try {
+      const fetchData = async () => {
+        const accessToken = await getAccessTokenSilently();
+        const resp = await getServices(accessToken);
+        if (resp) {
+          setServices(resp.data.data);
+        }
+      };
+      fetchData();
+    } catch (error) {
+      console.log(error);
+      NotificationManager.error(
+        "Existio un error al obtener la informacion",
+        "",
+        2000
+      );
+    }
+  }, [getAccessTokenSilently]);
 
   const handleSubmit = async (values) => {
     try {
+      const accessToken = await getAccessTokenSilently();
+      values.services = selectedServices;
       if (action === "NEW") {
-        values.services = selectedServices;
-        await axios.post("maintenances/", values);
-      } else {
-        values.services = selectedServices;
-        await axios.patch("maintenances/" + maintenance.id, values);
+        await postMaintenance(values, accessToken);
+      } else if (action === "INFO") {
+        await updateMaintenance(maintenance.id, values, accessToken);
       }
-      NotificationManager.success("OK!", "", 2000);
+      NotificationManager.success("Transaccion existosa", "", 2000);
       navigate("/cars/" + maintenance.carId + "/maintenances", {
         state: {
           car: { id: maintenance.carId },
@@ -80,6 +95,11 @@ const MaintenanceDetail = () => {
       });
     } catch (err) {
       console.log(err);
+      NotificationManager.error(
+        "Existio un error al procesar la solicitud",
+        "",
+        2000
+      );
     }
   };
 
