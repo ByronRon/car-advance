@@ -1,40 +1,35 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
+import { carColumns } from "../datatables/cars.datatables";
 import styles from "../styles/Datatable.module.css";
-import EditIcon from "@mui/icons-material/Edit";
+import CarRepairIcon from "@mui/icons-material/CarRepair";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { servicesColumns } from "../datatables/services.datatables";
-import { useState } from "react";
-import { useEffect } from "react";
-import { NotificationManager } from "react-notifications";
-import { useConfirm } from "material-ui-confirm";
 import { useAuth0 } from "@auth0/auth0-react";
-import { deleteService, getServices } from "../services/service.service";
+import { deleteCar, getCars } from "../services/car.service";
+import { useConfirm } from "material-ui-confirm";
+import NotificationManager from "react-notifications/lib/NotificationManager";
 
-const Service = () => {
+const Car = () => {
   const confirm = useConfirm();
-  const [services, setServices] = useState([]);
+  const navigate = useNavigate();
   const { getAccessTokenSilently } = useAuth0();
+  const [cars, setCars] = useState([]);
 
   useEffect(() => {
-    try {
-      const fetchData = async () => {
+    const fetchData = async () => {
+      try {
         const accessToken = await getAccessTokenSilently();
-        const resp = await getServices(accessToken);
+        const resp = await getCars(accessToken);
         if (resp) {
-          setServices(resp.data.data);
+          setCars(resp.data.data);
         }
-      };
-      fetchData();
-    } catch (error) {
-      console.log(error);
-      NotificationManager.error(
-        "Existio un error al obtener la informacion",
-        "",
-        2000
-      );
-    }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
   }, [getAccessTokenSilently]);
 
   const handleDelete = async (e, id) => {
@@ -45,12 +40,11 @@ const Service = () => {
         description: "Esta seguro que desea eliminar el registro seleccionado?",
       }).then(async () => {
         const accessToken = await getAccessTokenSilently();
-        await deleteService(id, accessToken);
-        setServices((services) =>
-          services.filter((service) => service.id !== id)
-        );
+        await deleteCar(id, accessToken);
+        setCars((cars) => cars.filter((car) => car.id !== id));
 
         NotificationManager.success("OK!", "", 2000);
+        navigate("/");
       });
     } catch (err) {
       console.log(err);
@@ -71,13 +65,20 @@ const Service = () => {
         return (
           <div className={styles.cellAction}>
             <Link
-              to={{ pathname: "/services/" + params.row.id }}
-              state={{ service: params.row, action: "INFO" }}
+              to={{ pathname: "/cars/" + params.row.id }}
+              state={{ car: params.row, action: "INFO" }}
               style={{ textDecoration: "none" }}
             >
-              <EditIcon className={styles.icon} />
+              <VisibilityIcon className={styles.icon} />
             </Link>
-
+            <Link
+              to={{
+                pathname: "/cars/" + params.row.id + "/maintenances",
+              }}
+              state={{ car: params.row }}
+            >
+              <CarRepairIcon className={styles.icon} />
+            </Link>
             <div
               className={styles.deleteButton}
               onClick={(e) => handleDelete(e, params.row.id)}
@@ -92,10 +93,10 @@ const Service = () => {
   return (
     <div className={styles.datatable}>
       <div className={styles.datatableTitle}>
-        Services
+        Cars
         <Link
-          to="/services/new"
-          state={{ service: {}, action: "NEW" }}
+          to="/cars/new"
+          state={{ car: {}, action: "NEW" }}
           className={styles.link}
         >
           Add New
@@ -103,8 +104,8 @@ const Service = () => {
       </div>
       <DataGrid
         className={styles.datagrid}
-        rows={services}
-        columns={servicesColumns.concat(actionColumn)}
+        rows={cars}
+        columns={carColumns.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
         // checkboxSelection
@@ -113,4 +114,4 @@ const Service = () => {
   );
 };
 
-export default Service;
+export default Car;

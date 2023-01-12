@@ -1,10 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
-import Home from "./pages/Home";
 import Login from "./pages/Login";
 import { Routes, Route } from "react-router-dom";
-// import { useContext } from "react";
-// import { AuthContext } from "./context/AuthContext";
 import LayoutNoHeader from "./components/layouts/LayoutNoHeader";
 import Layout from "./components/layouts/Layout";
 import Service from "./pages/Service";
@@ -13,14 +10,11 @@ import ServiceDetail from "./pages/ServiceDetail";
 import MaintenanceCard from "./pages/MaintenanceCard";
 import MaintenanceDetail from "./pages/MaintenanceDetail";
 import "react-notifications/lib/notifications.css";
-// import NotificationContainer from "react-notifications";
-// import { ConfirmProvider } from "material-ui-confirm";
 import CallbackPage from "./pages/CallbackPage";
-//import "react-notifications/lib/notifications.css";
-// import NotificationContainer from "react-notifications";
 
 import AuthenticationGuard from "./components/guards/AuthenticationGuard";
 import { PageLoader } from "./components/PageLoader";
+import Car from "./pages/Car";
 
 const App = () => {
   const { isLoading } = useAuth0();
@@ -43,7 +37,7 @@ const App = () => {
         </Route>
         <Route element={<Layout />}>
           <Route path="/">
-            <Route index element={<AuthenticationGuard component={Home} />} />
+            <Route index element={<AuthenticationGuard component={Car} />} />
 
             <Route
               path="cars/:id"

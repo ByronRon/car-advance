@@ -25,54 +25,74 @@ const getProtectedConfig = (url, method, accessToken, values) => {
 };
 
 export const GetPublicResource = async (url) => {
-  const { data, error } = await callApi(getPublicConfig(url, "GET"));
-
-  return {
-    data: data || null,
-    error,
-  };
+  return await callApi(getPublicConfig(url, "GET"));
 };
 
 export const GetProtectedResource = async (url, accessToken) => {
-  const { data, error } = await callApi(
-    getProtectedConfig(url, "GET", accessToken)
-  );
-
-  return {
-    data: data || null,
-    error,
-  };
+  return await callApi(getProtectedConfig(url, "GET", accessToken));
 };
 
 export const PostProtectedResource = async (url, accessToken, values) => {
-  const { data, error } = await callApi(
-    getProtectedConfig(url, "POST", accessToken, values)
-  );
-  console.log("ERROR::", error);
-  return {
-    data: data || null,
-    error,
-  };
+  return await callApi(getProtectedConfig(url, "POST", accessToken, values));
 };
 
 export const DeleteProtectedResource = async (url, accessToken) => {
-  const { data, error } = await callApi(
-    getProtectedConfig(url, "DELETE", accessToken)
-  );
-
-  return {
-    data: data || null,
-    error,
-  };
+  return await callApi(getProtectedConfig(url, "DELETE", accessToken));
 };
 
 export const UpdateProtectedResource = async (url, accessToken, values) => {
-  const { data, error } = await callApi(
-    getProtectedConfig(url, "PATCH", accessToken, values)
-  );
-
-  return {
-    data: data || null,
-    error,
-  };
+  return await callApi(getProtectedConfig(url, "PATCH", accessToken, values));
 };
+
+// export const GetPublicResource = async (url) => {
+//   const { data, error } = await callApi(getPublicConfig(url, "GET"));
+
+//   return {
+//     data: data || null,
+//     error,
+//   };
+// };
+
+// export const GetProtectedResource = async (url, accessToken) => {
+//   const { data, error } = await callApi(
+//     getProtectedConfig(url, "GET", accessToken)
+//   );
+
+//   return {
+//     data: data || null,
+//     error,
+//   };
+// };
+
+// export const PostProtectedResource = async (url, accessToken, values) => {
+//   const { data, error } = await callApi(
+//     getProtectedConfig(url, "POST", accessToken, values)
+//   );
+//   console.log("ERROR::", error);
+//   return {
+//     data: data || null,
+//     error,
+//   };
+// };
+
+// export const DeleteProtectedResource = async (url, accessToken) => {
+//   const { data, error } = await callApi(
+//     getProtectedConfig(url, "DELETE", accessToken)
+//   );
+
+//   return {
+//     data: data || null,
+//     error,
+//   };
+// };
+
+// export const UpdateProtectedResource = async (url, accessToken, values) => {
+//   const { data, error } = await callApi(
+//     getProtectedConfig(url, "PATCH", accessToken, values)
+//   );
+
+//   return {
+//     data: data || null,
+//     error,
+//   };
+// };

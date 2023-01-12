@@ -23,10 +23,10 @@ axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 ReactDOM.render(
   <React.StrictMode>
-    <NotificationContainer />
     <ConfirmProvider>
       <BrowserRouter>
         <Auth0ProviderWithNavigate>
+          <NotificationContainer />
           <App />
         </Auth0ProviderWithNavigate>
       </BrowserRouter>

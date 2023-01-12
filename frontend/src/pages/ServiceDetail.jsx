@@ -6,7 +6,7 @@ import { Button, Grid, TextField } from "@mui/material";
 import styles from "../styles/CarDetail.module.css";
 import { NotificationManager } from "react-notifications";
 import { useAuth0 } from "@auth0/auth0-react";
-import { postServices, updateServices } from "../services/service.service";
+import { postService, updateService } from "../services/service.service";
 
 const validationSchema = yup.object({
   title: yup
@@ -29,30 +29,19 @@ const ServiceDetail = () => {
       const accessToken = await getAccessTokenSilently();
 
       if (action === "NEW") {
-        const { error } = await postServices(values, accessToken);
-        if (error) {
-          NotificationManager.error(
-            "Existio un error al crear el registro",
-            "",
-            2000
-          );
-          return;
-        }
-      } else {
-        const { error } = await updateServices(service.id, values, accessToken);
-        if (error) {
-          NotificationManager.error(
-            "Existio un error al actualizar el registro",
-            "",
-            2000
-          );
-          return;
-        }
+        await postService(values, accessToken);
+      } else if (action === "INFO") {
+        await updateService(service.id, values, accessToken);
       }
       NotificationManager.success("Transaccion existosa", "", 2000);
       navigate("/services");
     } catch (err) {
       console.log(err);
+      NotificationManager.error(
+        "Existio un error al procesar la solicitud",
+        "",
+        2000
+      );
     }
   };
 

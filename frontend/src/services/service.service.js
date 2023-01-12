@@ -13,14 +13,14 @@ export const getService = async (id, accessToken) => {
   return await GetProtectedResource("service/" + id, accessToken);
 };
 
-export const postServices = async (values, accessToken) => {
+export const postService = async (values, accessToken) => {
   return await PostProtectedResource("services", accessToken, values);
 };
 
-export const updateServices = async (id, values, accessToken) => {
+export const updateService = async (id, values, accessToken) => {
   return await UpdateProtectedResource("services/" + id, accessToken, values);
 };
 
-export const deleteServices = async (id, accessToken) => {
+export const deleteService = async (id, accessToken) => {
   return await DeleteProtectedResource("services/" + id, accessToken);
 };

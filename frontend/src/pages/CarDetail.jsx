@@ -4,8 +4,9 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { Button, Grid, TextField } from "@mui/material";
 import styles from "../styles/CarDetail.module.css";
-import axios from "axios";
 import { NotificationManager } from "react-notifications";
+import { useAuth0 } from "@auth0/auth0-react";
+import { postCar, updateCar } from "../services/car.service";
 
 const validationSchema = yup.object({
   brand: yup.string("Ingrese la marca").required("Campo requerido").max(45),
@@ -20,6 +21,7 @@ const validationSchema = yup.object({
 
 const CarDetail = () => {
   const navigate = useNavigate();
+  const { getAccessTokenSilently } = useAuth0();
   const item = useLocation();
   const {
     state: { car, action },
@@ -27,15 +29,22 @@ const CarDetail = () => {
 
   const handleSubmit = async (values) => {
     try {
+      const accessToken = await getAccessTokenSilently();
+
       if (action === "NEW") {
-        await axios.post("cars/", values);
-      } else {
-        await axios.patch("cars/" + car.id, values);
+        await postCar(values, accessToken);
+      } else if (action === "INFO") {
+        await updateCar(car.id, values, accessToken);
       }
-      NotificationManager.success("OK!", "", 2000);
+      NotificationManager.success("Transaccion existosa", "", 2000);
       navigate("/");
     } catch (err) {
       console.log(err);
+      NotificationManager.error(
+        "Existio un error al procesar la solicitud",
+        "",
+        2000
+      );
     }
   };
 
@@ -56,7 +65,6 @@ const CarDetail = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
       handleSubmit(values);
     },
   });
