@@ -8,11 +8,25 @@
 }
 
 .wrapper {
-    width: 100%;
+    /* width: auto; */
     padding: 20px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    flex: 10;
+}
+
+.logoWrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logoWrapper .logo {
+    font-size: 20px;
+    font-weight: bold;
+    color: teal;
 }
 
 /* .search {

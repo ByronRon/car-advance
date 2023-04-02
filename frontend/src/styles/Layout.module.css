@@ -1,7 +1,39 @@
 .container {
     display: flex;
+    flex-direction: column;
+    /* background-image: url(../../public/images/background.jpg);
+    background-repeat: no-repeat;
+    background-size: 100%; */
+    /* background-color: rgb(76, 76, 76); */
+    height: 100vh;
 }
 
 .wrapper {
     flex: 6;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+}
+.sidebar {
+    flex: 1;
+    min-height: 100vh;
+    background-color: white;
+}
+
+.children {
+    flex: 6;
+}
+
+.top {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+hr {
+    height: 0;
+    border: 0.1px solid rgb(230, 227, 227);
 }

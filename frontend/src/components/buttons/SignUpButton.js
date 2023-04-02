@@ -1,4 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { Button } from "@mui/material";
 import React from "react";
 
 const SignUpButton = () => {
@@ -13,9 +14,9 @@ const SignUpButton = () => {
     });
   };
   return (
-    <button className="button__sign-up" onClick={handleSignUp}>
+    <Button variant="outlined" size="small" onClick={handleSignUp}>
       Sign Up
-    </button>
+    </Button>
   );
 };
 

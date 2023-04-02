@@ -1,8 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
-import Login from "./pages/Login";
+// import Login from "./pages/Login";
 import { Routes, Route } from "react-router-dom";
-import LayoutNoHeader from "./components/layouts/LayoutNoHeader";
+// import LayoutNoHeader from "./components/layouts/LayoutNoHeader";
 import Layout from "./components/layouts/Layout";
 import Service from "./pages/Service";
 import CarDetail from "./pages/CarDetail";
@@ -16,6 +16,7 @@ import AuthenticationGuard from "./components/guards/AuthenticationGuard";
 import { PageLoader } from "./components/PageLoader";
 import Car from "./pages/Car";
 import Home from "./pages/Home";
+import Profile from "./pages/Profile";
 
 const App = () => {
   const { isLoading } = useAuth0();
@@ -33,12 +34,12 @@ const App = () => {
       {/* <ConfirmProvider>
         <NotificationContainer /> */}
       <Routes>
-        <Route element={<LayoutNoHeader />}>
+        {/* <Route element={<LayoutNoHeader />}>
           <Route path="login" element={<Login />} />
-        </Route>
+        </Route> */}
         <Route element={<Layout />}>
           <Route path="/">
-            <Route index element={Home} />
+            <Route index element={<Home />} />
 
             <Route
               path="cars"
@@ -88,7 +89,8 @@ const App = () => {
               element={<AuthenticationGuard component={ServiceDetail} />}
             />
           </Route>
-          <Route path="/callback" element={CallbackPage} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/callback" element={<CallbackPage />} />
           {/* <Route path="users">
             <Route
               index
